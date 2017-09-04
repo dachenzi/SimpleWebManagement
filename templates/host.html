@@ -3,10 +3,29 @@
 {% block main %}
 
     <h2 class="sub-header">主机信息</h2>
+
     <div class="table-responsive">
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addhost">
+            全选
+        </button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addhost">
+            反选
+        </button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#bulk_del">
+            取消
+        </button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bulk_del">
+            添加主机
+        </button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#bulk_del">
+            批量删除
+        </button>
+
+
         <table class="table table-striped">
             <thead>
             <tr>
+                <th></th>
                 <th style="text-align: center">序号</th>
                 <th style="text-align: center">主机名称</th>
                 <th style="text-align: center">主机地址</th>
@@ -17,12 +36,17 @@
             </thead>
             <tbody>
             {% for host in host_list %}
-                <tr style="text-align: center">
+                <tr style="text-align: center" hid="{{ host.hid }}">
+                    <th><input type="checkbox"></th>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ host.hostname }}</td>
                     <td>{{ host.ipaddr }}</td>
                     <td>{{ host.services_line.sname }}</td>
-                    <td>{{ host.admin.all.first.username }}</td>
+                    <td>
+                        {% for admin in  host.admin.all %}
+                            <span uid="{{ admin.uid }}">{{ admin.username }}</span>
+                        {% endfor %}
+                    </td>
                     <td>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit">
                             编辑
@@ -49,21 +73,31 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="form-group">
-                            <label for="recipient-name" class="control-label">主机名:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="hostname">主机名称</span>
+                            <input type="text" class="form-control" placeholder="hostname"
+                                   aria-describedby="sizing-addon2">
                         </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="control-label">主机地址:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="ipaddr">主机地址</span>
+                            <input type="text" class="form-control" placeholder="0.0.0.0"
+                                   aria-describedby="sizing-addon2">
                         </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="control-label">所属业务线:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="serviceline">所属业务</span>
+                            <select class="form-control">
+                                {% for service in service_list %}
+                                    <option value="{{ service.sid }}">{{ service.sname }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="control-label">管理员:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="admin">管理人员</span>
+                            <select multiple class="form-control" id='admin'>
+                                {% for user in user_list %}
+                                    <option value="{{ user.uid }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
 
                     </form>

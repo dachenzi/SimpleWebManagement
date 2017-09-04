@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
-from HostManager import models
+from HostManager.models import  Host,Serviceline
+from UserLogin.models import UserInfo
 
 # Create your views here.
 
@@ -10,6 +11,10 @@ def index(request):
 
 def host(request):
 
-    host_list = models.Host.objects.all()
+    host_list = Host.objects.all()
 
-    return render(request,'host.html',{'host_list':host_list})
+    user_list = UserInfo.objects.all()
+
+    service_list = Serviceline.objects.all()
+
+    return render(request,'host.html',locals())
