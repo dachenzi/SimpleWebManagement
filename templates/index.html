@@ -1,0 +1,161 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运维自动化平台</title>
+    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+    <link rel="shortcut icon" href="{% static "icon/logo1.jpg" %}">
+    <script src="{% static "js/jquery-3.2.1.js" %}"></script>
+    <script src="{% static "js/bootstrap.js" %}"></script>
+
+    <style>
+        .sidebar {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            bottom: 0;
+        }
+
+        .main {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            bottom: 0;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 1px darkgray solid;
+            border-radius: 50%;
+            margin:0 auto;
+            text-align: center;
+        }
+        .box h1 {
+            line-height: 150px;
+            font-family: Consolas;
+            font-weight: 700;
+            font-size:100px;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <strong style="color:white;">运维自动化管理平台</strong>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">仪表盘</a></li>
+                <li><a href="#">设置</a></li>
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">帮助</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="/manage/index/">仪表盘<span class="sr-only">(current)</span></a></li>
+                <li><a href="/manage/host/">主机信息</a></li>
+                <li><a href="#">业务线信息</a></li>
+                <li><a href="#">待添加</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="">待添加</a></li>
+                <li><a href="">待添加</a></li>
+                <li><a href="">待添加</a></li>
+                <li><a href="">待添加</a></li>
+                <li><a href="">待添加</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="">待添加</a></li>
+                <li><a href="">待添加</a></li>
+                <li><a href="">待添加</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% block main %}
+            <h1 class="page-header">仪表盘</h1>
+
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <div class="box">
+                        <h1>95</h1>
+                    </div>
+                    <h4>主机数</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <div class="box">
+                        <h1>8</h1>
+                    </div>
+                    <h4>业务线数</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <div class="box">
+                        <h1>10</h1>
+                    </div>
+                    <h4>用户数</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <div class="box">
+                        <h1>2</h1>
+                    </div>
+                    <h4>其他</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+            </div>
+
+            <h2 class="sub-header">Section title</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1,001</td>
+                        <td>Lorem</td>
+                        <td>ipsum</td>
+                        <td>dolor</td>
+                        <td>sit</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endblock %}
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
