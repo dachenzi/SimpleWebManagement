@@ -33,3 +33,10 @@ def login(request):
         else:
 
             return render(request,'login.html',{'msg':'用户名或密码不正确'})
+
+def logout(request):
+
+    response = redirect('/user/login/')
+    response.delete_cookie('helloworld')
+
+    return response

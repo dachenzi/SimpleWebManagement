@@ -5,19 +5,19 @@
     <h2 class="sub-header">主机信息</h2>
 
     <div class="table-responsive">
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addhost">
+        <button type="button" class="btn btn-warning" name="allcheck">
             全选
         </button>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addhost">
+        <button type="button" class="btn btn-warning" name="revcheck">
             反选
         </button>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#bulk_del">
+        <button type="button" class="btn btn-warning" name="allcancel">
             取消
         </button>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bulk_del">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addhost" name="addhost">
             添加主机
         </button>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#bulk_del">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#bulk_del" name="bulk_del">
             批量删除
         </button>
 
@@ -37,7 +37,7 @@
             <tbody>
             {% for host in host_list %}
                 <tr style="text-align: center" hid="{{ host.hid }}">
-                    <th><input type="checkbox"></th>
+                    <td><input type="checkbox"></td>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ host.hostname }}</td>
                     <td>{{ host.ipaddr }}</td>
@@ -48,10 +48,11 @@
                         {% endfor %}
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" name = "edithost" data-target="#edithost" hid = "{{ host.hid }}">
                             编辑
                         </button>
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">删除
+                        <button type="button" class="btn btn-info" data-toggle="modal" name="delhost" data-target="#delhost" hid = "{{ host.hid }}" hostaddr="{{ host.ipaddr }}">
+                            删除
                         </button>
 
                     </td>
@@ -62,8 +63,8 @@
         </table>
     </div>
 
-
-    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <!-- 编辑主机模态对话框 -->
+    <div class="modal fade" id="edithost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -74,17 +75,17 @@
                 <div class="modal-body">
                     <form>
                         <div class="input-group">
-                            <span class="input-group-addon" id="hostname">主机名称</span>
+                            <span class="input-group-addon" id="modify_hostname">主机名称</span>
                             <input type="text" class="form-control" placeholder="hostname"
                                    aria-describedby="sizing-addon2">
                         </div>
                         <div class="input-group">
-                            <span class="input-group-addon" id="ipaddr">主机地址</span>
+                            <span class="input-group-addon" id="modify_ipaddr">主机地址</span>
                             <input type="text" class="form-control" placeholder="0.0.0.0"
                                    aria-describedby="sizing-addon2">
                         </div>
                         <div class="input-group">
-                            <span class="input-group-addon" id="serviceline">所属业务</span>
+                            <span class="input-group-addon" id="modify_serviceline">所属业务</span>
                             <select class="form-control">
                                 {% for service in service_list %}
                                     <option value="{{ service.sid }}">{{ service.sname }}</option>
@@ -92,7 +93,7 @@
                             </select>
                         </div>
                         <div class="input-group">
-                            <span class="input-group-addon" id="admin">管理人员</span>
+                            <span class="input-group-addon" id="modify_admin">管理人员</span>
                             <select multiple class="form-control" id='admin'>
                                 {% for user in user_list %}
                                     <option value="{{ user.uid }}">{{ user.username }}</option>
@@ -110,5 +111,118 @@
         </div>
     </div>
 
+    <!-- 添加主机模态对话框 -->
+    <div class="modal fade" id="addhost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title" id="exampleModalLabel">添加主机</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="addhostform">
+                        <div class="input-group">
+                            <span class="input-group-addon">主机名称</span>
+                            <input type="text" class="form-control" placeholder="hostname"
+                                   aria-describedby="sizing-addon2" id="add_hostname" name="add_hostname">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">主机地址</span>
+                            <input type="text" class="form-control" placeholder="0.0.0.0"
+                                   aria-describedby="sizing-addon2" id="add_ipaddr" name="add_ipaddr">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">所属业务</span>
+                            <select class="form-control" id="add_serviceline" name="add_serviceline">
+                                {% for service in service_list %}
+                                    <option value="{{ service.sid }}">{{ service.sname }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">管理人员</span>
+                            <select multiple class="form-control" id="add_admin" name="add_admin">
+                                {% for user in user_list %}
+                                    <option value="{{ user.uid }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" name="addhostok">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除主机模态对话框 -->
+    <!-- Modal -->
+    <div class="modal fade" id="delhost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title" id="myModalLabel" >友情提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h3 name="message"></h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" >确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $("[name='allcheck']").click(function () {
+            $('table').find($('input')).each(function () {
+                $(this).prop('checked', true)
+            })
+        });
+
+        $("[name='allcancel']").click(function () {
+            $('table').find($('input')).each(function () {
+                $(this).prop('checked', false)
+            })
+        });
+
+        $("[name='revcheck']").click(function () {
+            $('table').find($('input')).each(function () {
+                $(this).prop('checked', !$(this).prop('checked'));
+            })
+        });
+
+        $("[name='addhostok']").click(function () {
+            $.ajax({
+                url: '/manage/addhost/',
+                type: 'post',
+                traditional: true,
+                data: {
+                    'csrfmiddlewaretoken': "{{ csrf_token }}",
+                    'hostname': $('#add_hostname').val(),
+                    'ipaddr': $('#add_ipaddr').val(),
+                    'serviceline': $('#add_serviceline').val(),
+                    'admin': $('#add_admin').val()
+                },
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data['status']) {
+                        location.reload()
+                    }
+                }
+
+            })
+        });
+
+        $("[name='delhost']").click(function () {
+            var hostaddr = $(this).attr('hostaddr');
+            $('#delhost').find($("[name='message']")).text("您确定要删除主机："+ hostaddr + '?' )
+        })
+    </script>
 {% endblock %}
